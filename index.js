@@ -3,10 +3,11 @@ const inquirer = require('inquirer');
 
 const db = mysql.createConnection(
   {
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: 'root',
-    database: 'employee_db'
+    database: 'employee_db',
+    port: 8889
   },
   console.log(`Connected to the employee_tracker_db database.`)
 );
@@ -57,19 +58,22 @@ init();
 const viewDept = () => {
   db.query(`SELECT * FROM department`, (err, results) => {
     err ? console.error(err) : console.table(results);
-  }).then(function(){init()});
+    init();
+  })
 };
 
 const viewRoles = () => {
-  db.query(`SELECT * FROM roles`, (err, results) => {
+  db.query(`SELECT * FROM role`, (err, results) => {
     err ? console.error(err) : console.table(results);
-  }).then(function(){intro()});
+    init();
+  })
 };
 
 const viewEmployees = () => {
-  db.query(`SELECT * FROM employees`, (err, results) => {
+  db.query(`SELECT * FROM employee`, (err, results) => {
     err ? console.error(err) : console.table(results);
-  }).then(function(){intro()});
+    init();
+  })
 };
 
 const addDept = () => {
@@ -88,11 +92,12 @@ const addDept = () => {
         } else {
           db.query(`SELECT * FROM department`, (err, results) => {
             err ? console.error(err) : console.table(results);
+            init();
           })
         }
       }
       )
-    }).then(function(){intro()});
+    })
 };
 
 const addRole = () => {
@@ -126,17 +131,18 @@ const addRole = () => {
           return mappedId[0]
         })
         .then((mappedId) => {
-          db.promise().query(`INSERT INTO roles(title, salary, department_id)
+          db.promise().query(`INSERT INTO role(title, salary, department_id)
                 VALUES(?, ?, ?)`, [ans.roleTitle, ans.roleSalary, mappedId]);
+                init();
         })
-    }).then(function(){intro()});
+    })
 };
 
 const addEmployee = () => {
-  const rollChoices = () => db.promise().query(`SELECT * FROM roles`)
+  const rollChoices = () => db.promise().query(`SELECT * FROM role`)
   .then((rows) => {
-      let names = rows[0].map(obj => obj.name);
-      return names
+      let title = rows[0].map(obj => obj.title);
+      return title
   })
   inquirer
     .prompt([
@@ -157,16 +163,17 @@ const addEmployee = () => {
         choices: rollChoices
       }
     ]).then(ans => {
-      db.query(`INSERT INTO employees(first_name, last_name)
+      db.query(`INSERT INTO employee(first_name, last_name)
                     VALUES(?, ?)`, [ans.firstName, ans.lastName], (err, results) => {
         if (err) {
           console.log(err)
         } else {
-          db.query(`SELECT * FROM employees`, (err, results) => {
+          db.query(`SELECT * FROM employee`, (err, results) => {
             err ? console.error(err) : console.table(results);
+            init();
           })
         }
       }
       )
-    }).then(function(){intro()});
+    });
 };
