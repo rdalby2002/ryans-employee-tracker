@@ -17,11 +17,11 @@ In a coorporate setting, it can be a headache sifting through databases to find 
 
 ## Installation
 
-To install, clone the repository from github to a directory of your choice. From there, run npm i to install the necessary packages, and either source the sql files found in db, or source your own, in which case you'd just replace the database name in index.js with your own database's name. From there, delete the port: 8889 line from server.js and replace the password portion with your own mysql password. 
+To install, clone the repository from github to a directory of your choice. From there, run `npm i` to install the necessary packages, and either source the sql files found in db, or source your own, in which case you'd just replace the database name in index.js with your own database's name. From there, delete the `port: 8889` line from server.js, replace 127.0.0.1 with `localhost` and replace the password portion with your own mysql password; all so long as you're using mysql natively, and not through a third-party app like MAMP, as is my case.
 
 ## Usage
 
-After following the installation instructions, use the terminal to cd into the ryans-employee-tracker directory and run npm start. After doing so, follow the command prompts to perform any desired function within the database.
+After following the installation instructions, use the terminal to cd into the ryans-employee-tracker directory and run `npm start`. After doing so, follow the command prompts to perform any desired function within the database. This process is outlined in the following [demo video](https://drive.google.com/file/d/1eRI3mdzoTiEzTtDEoowqR6Xe4k9fOCCM/view).
 
 ## Contributing
 
